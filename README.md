@@ -23,7 +23,8 @@ ImageCropper JS Plugin, pure Javascript with FileReader/Canvas/Blob APIs
 }
 
 ```
-**Notice: ** `cropperListener(hd = true)` the `hd` param for performance consideration, default is `false` in cropper movement, cropper resizer movement and souce image movement `cropperListener` calls. That means when stopping moving, the cropped src changed from low definition(cropper size) to high definition (origin definition).
+
+**Notice:** `cropperListener(hd = true)` the `hd` param for performance consideration, default is `false` in cropper movement, cropper resizer movement and souce image movement `cropperListener` calls. That means when stopping moving, the cropped src changed from low definition(cropper size) to high definition (origin definition).
 
 If for hd, remove the `fasle` param in those calls.
 
