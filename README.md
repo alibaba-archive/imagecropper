@@ -1,7 +1,7 @@
 # Image Cropper
 ImageCropper JS Plugin, pure Javascript with FileReader/Canvas/Blob APIs
 
-**It is used in Teambition Web project Cover & user avatar crop**
+**It is used in Teambition Web project cover & user avatar crop**
 
 ## Usage
 
