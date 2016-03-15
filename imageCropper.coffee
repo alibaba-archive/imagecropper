@@ -11,6 +11,7 @@ class ImageCropper
     @cropperRatio = options.ratio or 1 # cropper ratio
     @croppedWidth = options.resultWidth or @cropperWidth
     @cropperRound = options.round or false # enable central round selector
+    @hd = options.hd or false # enable cropper hd mode
     @cropCallback = options.crop or null
     @onError = options.onError or null
     @fileSizeLimit = options.fileSizeLimit or Infinity
@@ -32,6 +33,7 @@ class ImageCropper
     @cropper = document.createElement('canvas') # cropper selector
     @cropperSeResize = document.createElement('canvas') # cropperSeResize
     @cropperSource = document.createElement('canvas') # clean cropper source
+    @imageOpti = document.createElement('canvas') # image optimized source
     @image = new Image() # add image file source to memeory
     @imageRatio = 1 # source image & scaled image ratio
     @reader = new FileReader()
@@ -135,6 +137,15 @@ class ImageCropper
     @sourceImage.style.left = '0px'
     @imageContainer.appendChild(@sourceImage)
 
+    # image source optimize with a more smaller canvas
+    if @image.width > 1200 and @image.height > 1200
+      @imageOptiRatio = Math.max(@image.width, @image.height) / 1200
+    else
+      @imageOptiRatio = 1
+    @imageOpti.width = ~~(@image.width / @imageOptiRatio)
+    @imageOpti.height = ~~(@image.height / @imageOptiRatio)
+    @imageOpti.getContext('2d').drawImage(@image, 0, 0, @imageOpti.width, @imageOpti.height)
+
     # source image width/height adjust
     widthAdapt = =>
       @sourceImage.style.width = "#{@containerWidth}px"
@@ -231,13 +242,24 @@ class ImageCropper
     swidth = @image.width - sx unless sx + swidth <= @image.width
     sheight = @cropperHeight / @imageRatio
     sheight = @image.height - sy unless sy + sheight <= @image.height
+    width = swidth
+    height = sheight
+    imageSrc = @image
 
-    width = if hd then swidth else @cropperWidth
-    height = if hd then sheight else @cropperHeight
+    # hd optimize params
+    unless hd
+      sx = ~~(sx / @imageOptiRatio)
+      sy = ~~(sy / @imageOptiRatio)
+      swidth = ~~(swidth / @imageOptiRatio)
+      sheight = ~~(sheight / @imageOptiRatio)
+      width = @cropperWidth
+      height = @cropperHeight
+      imageSrc = @imageOpti
+
     @cropper.width = width
     @cropper.height = height
     cropperCtx = @cropper.getContext('2d')
-    cropperCtx.drawImage(@image, sx, sy, swidth, sheight, 0, 0,
+    cropperCtx.drawImage(imageSrc, sx, sy, swidth, sheight, 0, 0,
       width, height)
     cropperBorder = 1
     cropperCtx.save()
@@ -249,7 +271,7 @@ class ImageCropper
     # add white background, considering transparent picture
     cropperSourceCtx.fillStyle = 'white'
     cropperSourceCtx.fillRect(0, 0, width, height)
-    cropperSourceCtx.drawImage(@image, sx, sy, swidth, sheight, 0, 0,
+    cropperSourceCtx.drawImage(imageSrc, sx, sy, swidth, sheight, 0, 0,
         width, height)
 
     # round style
@@ -335,7 +357,7 @@ class ImageCropper
     @imageOffsetTop = parseFloat(@sourceImage.style.top.slice(0, -2)) / @imageRatio
     @imageOffsetLeft = parseFloat(@sourceImage.style.left.slice(0, -2)) / @imageRatio
     # cropper listener
-    @cropperListener(false)
+    @cropperListener(@hd)
 
   cropperMousedown: (e) ->
     e.preventDefault()
@@ -377,7 +399,7 @@ class ImageCropper
 
     @cropperPrevX = e.clientX or e.targetTouches[0].clientX
     @cropperPrevY = e.clientY or e.targetTouches[0].clientY
-    @cropperListener(false)
+    @cropperListener(@hd)
 
   cropperSeResizeMousedown: (e) ->
     e.preventDefault()
@@ -429,7 +451,7 @@ class ImageCropper
 
     @cropperResizePrevX = e.clientX or e.targetTouches[0].clientX
     @cropperResizePrevY = e.clientY or e.targetTouches[0].clientY
-    @cropperListener(false)
+    @cropperListener(@hd)
 
   # cropped source to a Blob
   toBlob: ->

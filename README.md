@@ -18,15 +18,20 @@ ImageCropper JS Plugin, pure Javascript with FileReader/Canvas/Blob APIs
   ratio # optional, cropper ratio, default is 1
   resultWidth # optional, default is cropperWidth
   round # optional, enable central round selector, defalut is false
+  hd # optional, enable cropper hd mode, default is false
   crop # optional, cropped callback, revoked every cropped area changed
   file # optional, the file resource
 }
 
 ```
 
-**Notice:** `cropperListener(hd = true)` the `hd` param for performance consideration, default is `false` in cropper movement, cropper resizer movement and souce image movement `cropperListener` calls. That means when stopping moving, the cropped src changed from low definition(cropper size) to high definition (origin definition).
+**Notice:** `cropperListener(hd = true)` the `hd` param for performance 
+consideration, default is `false` in cropper movement, cropper resizer 
+movement and souce image movement `cropperListener` calls. That means 
+when stopping moving, the cropped src changed from low definition
+(cropper size) to high definition (origin definition).
 
-If for hd, remove the `fasle` param in those calls.
+If for hd, initialize it with `hd: true`.
 
 
 
