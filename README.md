@@ -21,6 +21,7 @@ ImageCropper JS Plugin, pure Javascript with FileReader/Canvas/Blob APIs
   hd # optional, enable cropper hd mode, default is false
   crop # optional, cropped callback, revoked every cropped area changed
   file # optional, the file resource
+  fileSizeLimit # optional, the file size limit, default is infinity, unit is Byte
 }
 
 ```
