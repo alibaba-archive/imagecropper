@@ -168,6 +168,12 @@ class ImageCropper
       widthAdapt()
     else if @heightAdapt and not @widthAdapt
       heightAdapt()
+    else if @widthAdapt and @heightAdapt
+      @sourceImage.style.cursor = 'default'
+      if @image.width / @image.height >= @containerWidth / @containerHeight
+        widthAdapt()
+      else
+        heightAdapt()
     else
       if @image.width / @image.height >= @containerWidth / @containerHeight
         heightAdapt()
@@ -187,7 +193,8 @@ class ImageCropper
     @imageOffsetLeft = @sourceImageLeft / @imageRatio
 
     # cropper size revision
-    @cropperWidth = @containerWidth * 0.8 if @cropperWidth is 0
+    if @cropperWidth is 0 or @cropperWidth > @sourceImageWidth
+      @cropperWidth = @sourceImageWidth * 0.8
     @cropperHeight = @cropperWidth / @cropperRatio
     if @cropperRatio > cropperBaseWidth / cropperBaseHeight
       if @cropperWidth > cropperBaseWidth
@@ -283,7 +290,7 @@ class ImageCropper
       cropperBuffer.height = height
       cropperBufferCtx = cropperBuffer.getContext('2d')
       cropperBufferCtx.drawImage(@cropperSource, 0, 0)
-      cropperBufferCtx.globalCompositeOperation = 'destination-in'
+      cropperBufferCtx.globalCompositeOperation = 'destination-in'
       if width > height
         radius = height
       else
