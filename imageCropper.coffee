@@ -132,7 +132,7 @@ class ImageCropper
     sourceImageCtx.fillStyle = 'rgba(0, 0, 0, 0.5)' # mask effect
     sourceImageCtx.fillRect(0, 0, @image.width, @image.height)
     @sourceImage.style.cursor = 'move'
-    @sourceImage.style.position = 'relative'
+    @sourceImage.style.position = 'absolute'
     @sourceImage.style.top = '0px'
     @sourceImage.style.left = '0px'
     @imageContainer.appendChild(@sourceImage)
