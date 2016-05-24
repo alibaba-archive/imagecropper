@@ -1,0 +1,24 @@
+{
+  "name": "imagecropper",
+  "version": "1.0.0",
+  "description": "ImageCropper JS Plugin, pure Javascript with FileReader/Canvas/Blob APIs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teambition/imagecropper.git"
+  },
+  "keywords": [
+    "imagecropper",
+    "canvas",
+    "touch"
+  ],
+  "author": "Chang Jin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/teambition/imagecropper/issues"
+  },
+  "homepage": "https://github.com/teambition/imagecropper#readme"
+}
